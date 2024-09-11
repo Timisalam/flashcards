@@ -1,26 +1,27 @@
 const flashCardContent = document.querySelector('.flashcard-input');
 const flashCardContainer = document.querySelector('.myFlashcard-container');
+const libraryContainer = document.querySelector('.library');
 
-let questions = [];
-let answers = [];
+let flashcards = [];
+let wrongAnswers = [];
+let library = [];
+const collection = {
+        title: 'Test',
+        cards: flashcards
+    };
 let count = 0;
-
-loadCards = () => {
+let count2= 0;
+library.push(collection)
+loadLibrary = () => {
     let i = 0;
-    while (i < questions.length) {
-        flashCardContainer.innerHTML += `
-        <div class="flashcard" onclick="this.classList.toggle('flip')">
+    while (i < flashcards.length) {
+        libraryContainer.innerHTML += `
+        <div class="flashcard" ">
             <div class="flashcard-inner">
                 <div class="flashcard-front">
-                    <p>${questions[i].data}</p>
+                    <p>${library[i].title}</p>
                 </div>
-                <div class="flashcard-back">
-                    <p>${answers[i].data}</p>
-                    <div class="flashcard-buttons">
-                        <button class="flashcard-btn flashcard-btn-x">X</button>
-                        <button class="flashcard-btn flashcard-btn-tick">✔</button>
-                    </div>
-                </div>
+            </div>
         </div>
         `
         i++;
@@ -32,10 +33,10 @@ loadNextCard = () => {
         <div class="flashcard" onclick="this.classList.toggle('flip')">
             <div class="flashcard-inner">
                 <div class="flashcard-front">
-                    <p>${questions[count].data}</p>
+                    <p>${flashcards[count].question}</p>
                 </div>
                 <div class="flashcard-back">
-                    <p>${answers[count].data}</p>
+                    <p>${flashcards[count].answer}</p>
                     <div class="flashcard-buttons">
                         <button class="flashcard-btn flashcard-btn-x">X</button>
                         <button class="flashcard-btn flashcard-btn-tick">✔</button>
@@ -43,50 +44,72 @@ loadNextCard = () => {
                 </div>
             </div>
         `
+    if(count == flashcards.length){
+        flashCardContainer.innerHTML = `
+        <div class="flashcard" onclick="this.classList.toggle('flip')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <p>${wrongAnswers[count2].question}</p>
+                </div>
+                <div class="flashcard-back">
+                    <p>${wrongAnswers[count2].answer}</p>
+                    <div class="flashcard-buttons">
+                        <button class="flashcard-btn flashcard-btn-x">X</button>
+                        <button class="flashcard-btn flashcard-btn-tick">✔</button>
+                    </div>
+                </div>
+            </div>
+        `
+        count2++;
+    }
     count++;
 }
 
+moveCardToBack = () =>{
+    wrongAnswer = flashcards[count-1];
+    wrongAnswers.push(wrongAnswer); 
+
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    loadNextCard();
+    loadLibrary();
 })
 
 document.addEventListener('click', function(event) {
-    if (event.target.matches('.flashcard-btn-x')) {
-            
-    }
-
     if (event.target.matches('.flashcard-btn-tick')) {
             loadNextCard();
-            event.stopPropagation();
 
     }
+    if (event.target.matches('.flashcard-btn-x')) {
+        moveCardToBack();
+        loadNextCard();
+}
 });
 
 
 
-if (localStorage.getItem("questions")) {
-    let stored = localStorage.getItem("questions");
+if (localStorage.getItem("flashcards")) {
+    let stored = localStorage.getItem("flashcards");
     stored = JSON.parse(stored);
 
     if (Array.isArray(stored)) {
-        stored.forEach(task => {
-            console.log(task.data);
+        stored.forEach(flashcard => {
+            console.log(flashcard.question + " " + flashcard.answer);
         });
 
-        questions = stored
+        flashcards = stored
     }
 }
-
-if (localStorage.getItem("answers")) {
-    let stored = localStorage.getItem("answers");
+if (localStorage.getItem("library")) {
+    let stored = localStorage.getItem("library");
     stored = JSON.parse(stored);
 
     if (Array.isArray(stored)) {
-        stored.forEach(task => {
-            console.log(task.data);
+        stored.forEach(collection => {
+            console.log(collection.title + " " + collection.cards);
         });
 
-        answers = stored
+        library = stored
     }
 }
 
