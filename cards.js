@@ -5,25 +5,27 @@ const libraryContainer = document.querySelector('.library');
 let flashcards = [];
 let wrongAnswers = [];
 let library = [];
-const collection = {
+let collection = {
         title: 'Test',
         cards: flashcards
     };
 let count = 0;
-let count2= 0;
+let count2 = 0;
 library.push(collection)
 loadLibrary = () => {
     let i = 0;
-    while (i < flashcards.length) {
+    while (i < library.length) {
         libraryContainer.innerHTML += `
         <div class="flashcard" ">
             <div class="flashcard-inner">
                 <div class="flashcard-front">
-                    <p>${library[i].title}</p>
+                    <p>${library[i].data.title}</p>
                 </div>
             </div>
         </div>
         `
+        console.log(library.length)
+        console.log(library[i])
         i++;
     }
 }
@@ -72,7 +74,14 @@ moveCardToBack = () =>{
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    loadLibrary();
+    if (window.location.href === "file:///Users/Timis/Documents/WEB%20DESIGN%20PROJECTS/flashcards/flashcards/library.html") {
+        loadLibrary();
+        console.log("called")
+    }
+    if (window.location.href === "file:///Users/Timis/Documents/WEB%20DESIGN%20PROJECTS/flashcards/flashcards/flashcards.html") {
+        loadNextCard();
+    }
+    
 })
 
 document.addEventListener('click', function(event) {

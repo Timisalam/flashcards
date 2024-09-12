@@ -2,8 +2,6 @@ const saveButton = document.querySelector('.btn.btn-save');
 const flashCardQuestion = document.querySelector('.flashcard-question');
 const flashCardAnswer = document.querySelector('.flashcard-answer');
 const deleteButton = document.querySelector('.btn.btn-delete');
-const saveCollection = document.querySelector('.btn.btn-saveCollection');
-const collectionTitle = document.querySelector('.collection-title');
 
 
 let flashcards = [];
@@ -15,14 +13,7 @@ saveCard = (question,answer) => {
     localStorage.setItem('flashcards',JSON.stringify(flashcards));
 }
 
-saveCollection = (title) =>{
-    const collection = {
-        title: title,
-        cards: []
-    };
-    library.push({data: collection})
-    localStorage.setItem('library',JSON.stringify(library));
-}
+
 
 saveButton.addEventListener('click',e => {
     e.preventDefault();
@@ -32,13 +23,7 @@ saveButton.addEventListener('click',e => {
     flashCardAnswer.value = '';
 })
 
-saveCollection.addEventListener('click',e => {
-    e.preventDefault();
-    console.log('clicked');
-    saveCollection(saveCollection.value);
-    collectionTitle.value = '';
 
-})
 
 
 deleteButton.addEventListener('click',e =>{
